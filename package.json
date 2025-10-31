@@ -1,7 +1,7 @@
 {
-  "name": "blog-syntax",
-  "displayName": "BLOG language support",
-  "description": "Syntax + language features for BLOG (Bayesian Logic).",
+  "name": "blog-bayesian-logic-syntax",
+  "displayName": "BLOG Bayesian Logic Language Support",
+  "description": "Syntax highlighting and language server for the Bayesian Logic (BLOG) probabilistic programming language.",
   "version": "0.2.0",
   "workspaces": [
     "client",
