@@ -1,0 +1,58 @@
+[
+  {
+    "prefix": "type",
+    "body": [
+      "type ${1:TypeName};"
+    ],
+    "description": "Declare a BLOG type"
+  },
+  {
+    "prefix": "distinct",
+    "body": [
+      "distinct ${1:TypeName} ${2:nameList};"
+    ],
+    "description": "Distinct symbols"
+  },
+  {
+    "prefix": "random",
+    "body": [
+      "random ${1:Boolean|Integer|Real} ${2:name}(${3:Args}) ~ ${4:Distrib}(${5:params});"
+    ],
+    "description": "Random function"
+  },
+  {
+    "prefix": "fixed",
+    "body": [
+      "fixed ${1:Real} ${2:name} = ${3:value};"
+    ],
+    "description": "Fixed function"
+  },
+  {
+    "prefix": "origin",
+    "body": [
+      "origin ${1:TypeName} ${2:Func}(${3:Args});"
+    ],
+    "description": "Origin function"
+  },
+  {
+    "prefix": "number",
+    "body": [
+      "#${1:TypeName} ~ ${2:UniformInt}(${3:lo}, ${4:hi});"
+    ],
+    "description": "Number statement"
+  },
+  {
+    "prefix": "obs",
+    "body": [
+      "obs ${1:expr} = ${2:true};"
+    ],
+    "description": "Evidence statement"
+  },
+  {
+    "prefix": "query",
+    "body": [
+      "query ${1:expr};"
+    ],
+    "description": "Query statement"
+  }
+]

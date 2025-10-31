@@ -1,0 +1,20 @@
+{
+  "scopeName": "blog.injection.codeblock",
+  "injectionSelector": "L:markup.fenced_code.block.markdown, L:text.tex.latex",
+  "patterns": [
+    {
+      "begin": "(^|\\G)(```+)\\s*(blog)\\s*$",
+      "beginCaptures": {
+        "3": {
+          "name": "entity.name.section.markdown"
+        }
+      },
+      "end": "(^|\\G)\\2\\s*$",
+      "patterns": [
+        {
+          "include": "source.blog"
+        }
+      ]
+    }
+  ]
+}

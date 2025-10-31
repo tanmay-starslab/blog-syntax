@@ -1,0 +1,13 @@
+// basic BLOG smoke test
+type Ball;
+type Draw;
+
+#Ball ~ UniformInt(1,4);
+distinct Draw Draw[8];
+
+random Boolean isBlue(Ball b) ~ Bernoulli(0.5);
+random Ball ballDrawn(Draw d) ~ UniformChoice({b for Ball b});
+
+obs obsBlue = true;
+query size({b for Ball b});
+

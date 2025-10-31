@@ -1,0 +1,199 @@
+{
+  "scopeName": "source.blog",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+
+    /* High-priority constructs for distinct colors */
+    { "include": "#distinct-declaration" },
+    { "include": "#number-statement" },
+
+    { "include": "#keywords" },
+    { "include": "#types" },
+    { "include": "#distinct" },
+    { "include": "#randomFixedOrigin" },
+    { "include": "#functions" },
+    { "include": "#operators" },
+    { "include": "#brackets" },
+    { "include": "#evidenceQuery" }
+  ],
+
+  "repository": {
+    /* ---------------- Comments ---------------- */
+    "comments": {
+      "patterns": [
+        { "name": "comment.line.double-slash.blog", "match": "//.*$" },
+        { "name": "comment.block.blog", "begin": "/\\*", "end": "\\*/" }
+      ]
+    },
+
+    /* ---------------- Strings ---------------- */
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.blog",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [ { "include": "#escapes" } ]
+        },
+        {
+          "name": "string.quoted.single.blog",
+          "begin": "'",
+          "end": "'",
+          "patterns": [ { "include": "#escapes" } ]
+        }
+      ]
+    },
+    "escapes": {
+      "patterns": [
+        { "name": "constant.character.escape.blog", "match": "\\\\." }
+      ]
+    },
+
+    /* ---------------- Numbers ---------------- */
+    "numbers": {
+      "patterns": [
+        { "name": "constant.numeric.float.blog",   "match": "(?<!\\w)(?:\\d+\\.\\d*|\\.\\d+)(?:[eE][+-]?\\d+)?(?!\\w)" },
+        { "name": "constant.numeric.integer.blog", "match": "(?<!\\w)\\d+(?!\\w)" },
+        { "name": "constant.numeric.timestep.blog","match": "(?<!\\w)@\\d+(?!\\w)" }
+      ]
+    },
+
+    /* ---------------- NEW: distinct-declaration block ----------------
+       Colors:
+         - 'distinct' keyword → keyword.declaration.distinct.blog
+         - type after 'distinct' → support.type.blog
+         - each symbol in the list → entity.name.constant.blog.distinct
+         - commas/semicolon → punctuation.*
+       Handles multi-line symbol lists until the terminating ';'
+    ------------------------------------------------------------------- */
+    "distinct-declaration": {
+      "begin": "^\\s*(distinct)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s+",
+      "beginCaptures": {
+        "1": { "name": "keyword.declaration.distinct.blog" },
+        "2": { "name": "support.type.blog" }
+      },
+      "end": ";",
+      "endCaptures": {
+        "0": { "name": "punctuation.terminator.statement.semicolon.blog" }
+      },
+      "name": "meta.declaration.distinct.blog",
+      "patterns": [
+        { "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b", "name": "entity.name.constant.blog.distinct" },
+        { "match": ",", "name": "punctuation.separator.comma.blog" }
+      ]
+    },
+
+    /* ---------------- NEW: number-statement header -------------------
+       Matches:  #Emitter(Src = SourceCreator, ...)
+       Colors:
+         - '#' → punctuation.definition.number-statement.hash.blog
+         - statement name → entity.name.type.blog.number-statement
+         - parameter names → variable.parameter.blog
+         - '=' → keyword.operator.assignment.blog
+         - commas/parens → punctuation.*
+       Ends just before '~' (distribution) or at ';'
+    ------------------------------------------------------------------- */
+    "number-statement": {
+      "begin": "^\\s*(#)([A-Za-z_][A-Za-z0-9_]*)\\s*(?=\\()",
+      "beginCaptures": {
+        "1": { "name": "punctuation.definition.number-statement.hash.blog" },
+        "2": { "name": "entity.name.type.blog.number-statement" }
+      },
+      "end": "(?=\\s*~)|;",
+      "name": "meta.statement.number.blog",
+      "patterns": [
+        { "match": "\\(", "name": "punctuation.section.parens.begin.blog" },
+        { "match": "\\)", "name": "punctuation.section.parens.end.blog" },
+        { "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\b(?=\\s*=)", "name": "variable.parameter.blog" },
+        { "match": "=", "name": "keyword.operator.assignment.blog" },
+        { "match": ",", "name": "punctuation.separator.comma.blog" },
+        { "match": "\\b[in]\\b", "name": "keyword.operator.in.blog" }
+      ]
+    },
+
+    /* ---------------- Keywords ---------------- */
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.blog",
+          "match": "\\b(?:type|distinct|fixed|random|origin|case|in|if|then|else|obs|query|true|false|null|number)\\b"
+        }
+      ]
+    },
+
+    /* ---------------- Type names after 'type' ---------------- */
+    "types": {
+      "patterns": [
+        { "name": "storage.type.blog", "match": "(?<=\\btype\\s+)\\w+" }
+      ]
+    },
+
+    /* ---------------- Legacy 'distinct' keyword (fallback) ----------- */
+    "distinct": {
+      "patterns": [
+        { "name": "keyword.declaration.distinct.blog", "match": "\\bdistinct\\b" }
+      ]
+    },
+
+    /* ---------------- random/fixed/origin declarations --------------- */
+    "randomFixedOrigin": {
+      "patterns": [
+        {
+          "name": "meta.declaration.random.blog",
+          "begin": "\\brandom\\b",
+          "end": ";",
+          "patterns": [
+            {
+              "name": "storage.type.blog",
+              "match": "\\b(?:Boolean|Integer|Real|Timestep|Matrix|List|String|Character)\\b"
+            },
+            {
+              "name": "entity.name.function.blog",
+              "match": "\\b[A-Za-z_][A-Za-z0-9_]*\\s*(?=\\()"
+            },
+            { "name": "keyword.operator.tilde.blog", "match": "~" }
+          ]
+        },
+        { "name": "meta.declaration.fixed.blog",  "begin": "\\bfixed\\b",  "end": ";" },
+        { "name": "meta.declaration.origin.blog", "begin": "\\borigin\\b", "end": ";" }
+      ]
+    },
+
+    /* ---------------- Function applications / names ------------------ */
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.blog",
+          "match": "\\b[A-Z][A-Za-z0-9_]*\\b(?=\\s*\\()"
+        }
+      ]
+    },
+
+    /* ---------------- Operators ------------------------------------- */
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.blog", "match": "~|:=|==|!=|<=|>=|<|>|=|\\+|\\-|\\*|/|%|\\^|->|=>" }
+        /* NOTE: no generic '#' match here; the special scope for '#' is provided by #number-statement */
+      ]
+    },
+
+    /* ---------------- Brackets / braces / parens --------------------- */
+    "brackets": {
+      "patterns": [
+        { "name": "punctuation.section.braces.blog",   "match": "[{}]" },
+        { "name": "punctuation.section.parens.blog",   "match": "[()]" },
+        { "name": "punctuation.section.brackets.blog", "match": "[\\[\\]]" }
+      ]
+    },
+
+    /* ---------------- Evidence & query one-liners -------------------- */
+    "evidenceQuery": {
+      "patterns": [
+        { "name": "meta.statement.obs.blog",   "match": "\\bobs\\b.*?;" },
+        { "name": "meta.statement.query.blog", "match": "\\bquery\\b.*?;" }
+      ]
+    }
+  }
+}

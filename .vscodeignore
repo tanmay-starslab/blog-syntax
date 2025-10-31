@@ -1,0 +1,16 @@
+**/.git/**
+**/.github/**
+**/.vscode/**
+**/.DS_Store
+yarn.lock
+package-lock.json
+
+# Sources & maps (we ship bundles only)
+**/src/**
+**/*.ts
+**/*.tsbuildinfo
+**/*.map
+**/tsconfig.json
+
+# All node_modules excluded (we bundled client/server)
+**/node_modules/**

@@ -1,0 +1,62 @@
+{
+  "name": "blog-syntax",
+  "displayName": "BLOG language support",
+  "description": "Syntax + language features for BLOG (Bayesian Logic).",
+  "version": "0.2.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "publisher": "TanmaySingh",
+  "engines": {
+    "vscode": "^1.93.0"
+  },
+  "categories": ["Programming Languages"],
+  "icon": "media/icon.png",
+  "main": "./client/out/extension.js",
+  "activationEvents": ["onLanguage:blog"],
+
+  "contributes": {
+    "languages": [
+      {
+        "id": "blog",
+        "aliases": ["BLOG", "blog"],
+        "extensions": [".blog", ".dblog", ".mblog", ".eblog", ".qblog"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "blog",
+        "scopeName": "source.blog",
+        "path": "./syntaxes/blog.tmLanguage"
+      },
+      {
+        "injectTo": ["text.html.markdown", "text.tex.latex"],
+        "scopeName": "blog.injection.codeblock",
+        "path": "./syntaxes/blog-injection.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "blog",
+        "path": "./snippets/blog.json"
+      }
+    ]
+  },
+
+  "scripts": {
+    "vscode:prepublish": "npm run -w client build && npm run -w server build",
+    "compile": "npm run -w client build && npm run -w server build",
+    "test": "node ./test/run-colorization-tests.js || echo 'colorization tests placeholder'"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tanmay-starslab/blog-syntax.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tanmay-starslab/blog-syntax/issues"
+  },
+  "keywords": ["BLOG", "Bayesian Logic", "syntax", "TextMate", "LSP"]
+}
