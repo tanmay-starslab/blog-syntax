@@ -5,7 +5,7 @@ require("esbuild").build({
   bundle: true,
   platform: "node",
   format: "cjs",
-  sourcemap: false,
+  sourcemap: true,
   external: ["vscode"],               // VS Code provides this
   allowOverwrite: true
 }).catch(err => {

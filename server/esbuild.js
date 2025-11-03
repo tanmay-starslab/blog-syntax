@@ -5,7 +5,7 @@ require("esbuild").build({
   bundle: true,
   platform: "node",
   format: "cjs",
-  sourcemap: false,
+  sourcemap: true,
   allowOverwrite: true
 }).catch(err => {
   console.error(err);

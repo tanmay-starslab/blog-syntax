@@ -21,10 +21,16 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   client = new LanguageClient("blogLanguageServer", "BLOG Language Server", serverOptions, clientOptions);
-  // context.subscriptions.push(client.start());
+  
+  // Start the client and register a disposable to stop it
   client.start();
-  // Dispose by stopping the client when the extension unloads
-  context.subscriptions.push({ dispose: () => client.stop() });
+  context.subscriptions.push({
+    dispose: () => {
+      if (client) {
+        client.stop();
+      }
+    }
+  });
 }
 
 export function deactivate(): Thenable<void> | undefined {
