@@ -175,8 +175,8 @@ function wordAt(text: string, offset: number): string | null {
     end++;
   }
   
-  // Return the word if offset is within it
-  if (start <= offset && offset <= end) {
+  // Return the word if offset is within it (end points past the last character)
+  if (start <= offset && offset < end) {
     return text.slice(start, end);
   }
   
@@ -280,10 +280,13 @@ async function validate(doc: TextDocument) {
 function numberStmtAt(doc: TextDocument, posOffset: number): { name: string } | null {
   // Use the document's line API for efficiency
   const position = doc.positionAt(posOffset);
-  const lineText = doc.getText({
+  // Get the full line text - TextDocument handles bounds automatically
+  const line = doc.getText({
     start: { line: position.line, character: 0 },
-    end: { line: position.line, character: 300 } // reasonable line length limit
+    end: { line: position.line + 1, character: 0 }
   });
+  // Remove trailing newline if present
+  const lineText = line.replace(/[\r\n]+$/, '');
 
   const m = lineText.match(/^\s*#([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
   if (!m) return null;
